@@ -1,4 +1,5 @@
 ﻿using ClassLibrary1;
+using System.Text;
 
 namespace Ejercicio_I01___Necesito_un_préstamo
 {
@@ -7,13 +8,21 @@ namespace Ejercicio_I01___Necesito_un_préstamo
         static void Main(string[] args)
         {
             string opcion;
+            string historial;
+            decimal monto;
 
             Cuenta cuenta1 = new Cuenta("Juan Pérez", 15_000_000);
             Console.WriteLine(cuenta1.Mostrar());
-            
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Saldo inicial");
+            sb.AppendLine($"Titular: {cuenta1.Titular} - Saldo: {cuenta1.Cantidad:C2}");
+            sb.AppendLine("----------------------------------------------------------");
+
+
             do
             {
-                Console.Write("Ingrese una opción: (s) salir - (m) mostar saldo - (d) depositar - (r) retirar: ");
+                Console.Write("Ingrese una opción: (s) salir - (m) mostar saldo - (h) mostrar historial - (d) depositar - (r) retirar: ");
                 opcion = Console.ReadLine();
 
                 switch (opcion.ToLower())
@@ -21,16 +30,31 @@ namespace Ejercicio_I01___Necesito_un_préstamo
                     case "m":
                         LimpiarPantalla();
                         Console.WriteLine(cuenta1.Mostrar());
+
+                        break;
+
+                    case "h":
+                        LimpiarPantalla();
+                        historial = sb.ToString();
+                        Console.WriteLine(historial);
                         break;
 
                     case "d":
                         LimpiarPantalla();
-                        RealizarOperacion("depositar", cuenta1.Ingresar);
+                        monto = RealizarOperacion("depositar", cuenta1.Ingresar);
+
+                        sb.AppendLine($"Deposito: {monto:C2}");
+                        sb.AppendLine(cuenta1.Mostrar());
+                        sb.AppendLine("----------------------------------------------------------");
                         break;
 
                     case "r":
                         LimpiarPantalla();
-                        RealizarOperacion("retirar", cuenta1.Retirar);
+                        monto = RealizarOperacion("retirar", cuenta1.Retirar);
+                        
+                        sb.AppendLine($"Retiro: {monto:C2}");
+                        sb.AppendLine(cuenta1.Mostrar());
+                        sb.AppendLine("--------------------------------------");
                         break;
 
                     case "s":
@@ -45,7 +69,7 @@ namespace Ejercicio_I01___Necesito_un_préstamo
             } while (opcion != "s");
         }
 
-        internal static void RealizarOperacion(string tipoOperacion, Action<decimal> operacion)
+        internal static decimal RealizarOperacion(string tipoOperacion, Action<decimal> operacion)
         {
             do
             {
@@ -55,9 +79,9 @@ namespace Ejercicio_I01___Necesito_un_préstamo
                 {
                     decimal monto = decimal.Parse(strMonto);
                     operacion(monto);
-                    break;
+                    return monto;
                 }
-                Console.WriteLine("Error: El monto ingresado tiene un formato incorrecto");
+                Console.WriteLine("Error: Error: El monto ingresado debe ser un número no negativo");
             } while (true);
         }
 

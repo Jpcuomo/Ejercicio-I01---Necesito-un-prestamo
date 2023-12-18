@@ -38,8 +38,8 @@
         /// <summary>
         /// Muestra titular de cuenta y su saldo
         /// </summary>
-        /// <param name="titular">Nombre del titular de la cuenta</param>
-        /// <param name="cantidad">Saldo actual de la cuenta</param>
+        /// <param name="titular"></param>
+        /// <param name="cantidad"></param>
         /// <returns>String con info del titular y el saldo de la cuenta</returns>
         public string Mostrar()
         {
